@@ -7,7 +7,7 @@ import {createToDo} from "../../businessLogic/ToDo";
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     // TODO: Implement creating a new TODO item
-    console.log("Processing Event ", event);
+    console.log("Processing create todo event ", event);
     const authorization = event.headers.Authorization;
     const split = authorization.split(' ');
     const jwtToken = split[1];

@@ -1,7 +1,7 @@
 import 'source-map-support/register'
 import { cors } from 'middy/middlewares'
 import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda';
-import {getAllToDo} from "../../businessLogic/ToDo";
+import {getAllToDoItems} from "../../businessLogic/ToDo";
 //import * as middy from 'middy'
 
 
@@ -12,7 +12,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     const split = aut.split(' ');
     const token = split[1];
 
-    const toDos = await getAllToDo(token);
+    const toDos = await getAllToDoItems(token);
 
     return {
         statusCode: 200,

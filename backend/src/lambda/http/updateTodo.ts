@@ -7,7 +7,7 @@ import { cors, httpErrorHandler } from 'middy/middlewares'
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     // TODO: Update a TODO item with the provided id using values in the "updatedTodo" object
-    console.log("Processing Event ", event);
+    console.log("Processing event get updatetodo ", event);
     const authorization = event.headers.Authorization;
     const split = authorization.split(' ');
     const jwtToken = split[1];
