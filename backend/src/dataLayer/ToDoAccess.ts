@@ -13,7 +13,7 @@ export class ToDoAccess {
         private readonly s3BucketName = process.env.S3_BUCKET_NAME) {
     }
 
-    async getAllToDo(userId: string): Promise<TodoItem[]> {
+    async getAllToDoItems(userId: string): Promise<TodoItem[]> {
         console.log("Getting all todo");
         const result = await this.docClient.query({
             TableName: this.todoTable,
