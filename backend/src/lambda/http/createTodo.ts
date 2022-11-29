@@ -25,7 +25,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         }),
     }
 }
-handler.use(
+handler.arguments()
+    .use(
     cors({
       credentials: true
     })

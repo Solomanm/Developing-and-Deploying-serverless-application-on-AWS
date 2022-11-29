@@ -28,7 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     }
 };
 handler
-  .use(httpErrorHandler())
+  .arguments(httpErrorHandler())
   .use(
     cors({
       credentials: true

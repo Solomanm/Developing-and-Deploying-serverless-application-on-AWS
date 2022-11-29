@@ -1,7 +1,6 @@
 import 'source-map-support/register'
-import * as middy from 'middy'
+//import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
-
 //import { createAttachmentPresignedUrl } from '../../businessLogic/todos'
 //import { getUserId } from '../utils'
 import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda'
@@ -24,8 +23,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         })
     }
 }
-handler
-  .use(httpErrorHandler())
+handler.arguments(httpErrorHandler())
   .use(
     cors({
       credentials: true

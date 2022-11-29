@@ -3,6 +3,7 @@ import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { TodoItem } from "../models/TodoItem";
 import { TodoUpdate } from "../models/TodoUpdate";
+import { Types } from 'aws-sdk/clients/s3';
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
@@ -10,20 +11,28 @@ export class ToDoAccess {
     constructor(
         private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient(),
         private readonly todoTable = process.env.TODOS_TABLE,
+        private readonly s3Client: Types = new AWS.S3({ signatureVersion: 'v4' }),
         private readonly s3BucketName = process.env.S3_BUCKET_NAME) {
     }
 
     async getAllToDoItems(userId: string): Promise<TodoItem[]> {
         console.log("Getting all todo");
-        const result = await this.docClient.query({
+        const params = {
             TableName: this.todoTable,
-            keyConditionAttributeValues:{
-                ':userId': userId
+            KeyConditionExpression: "#userId = :userId",
+            ExpressionAttributeNames: {
+                "#userId": "userId"
+            },
+            ExpressionAttributeValues: {
+                ":userId": userId
             }
-        })
-        .promise()
-        const items = result.items
-        return items as TodoItem[]
+        };
+
+        const result = await this.docClient.query(params).promise();
+        console.log(result);
+        const items = result.Items;
+
+        return items as TodoItem[];
     }
 
     async createToDo(todoItem: TodoItem): Promise<TodoItem> {
@@ -44,20 +53,18 @@ export class ToDoAccess {
         console.log('Upadte todo item ')
         await this.docClient.update({
         TableName: this.todoTable,
-        key: {
+        Key: {
             todoId,
             userId
         },
+       
         UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
+        
         ExpressionAttributeValues: {
             ':name': todoUpdate.name,
             ':dueDate': todoUpdate.dueDate,
             ':done': todoUpdate.done
         },
-        ExpressionAttributeName: {
-            '#name': 'name'
-        }
-
     })
     .promise()
     return todoUpdate
