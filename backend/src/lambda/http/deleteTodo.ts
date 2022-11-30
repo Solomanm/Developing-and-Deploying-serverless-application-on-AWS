@@ -1,7 +1,7 @@
 import 'source-map-support/register'
 //import { getUserId } from '../utils'
 //import * as middy from 'middy'
-import { cors} from 'middy/middlewares'
+//import { cors} from 'middy/middlewares'
 import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda';
 import {deleteToDo} from "../../businessLogic/ToDo";
 
@@ -24,9 +24,4 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         body: deleteTodos,
     }
 }
-handler.arguments()
-  .use(
-    cors({
-      credentials: true
-    })
-  )
+

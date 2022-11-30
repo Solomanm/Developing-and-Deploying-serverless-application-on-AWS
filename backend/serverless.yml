@@ -22,7 +22,7 @@ provider:
   environment:
     PROJECT_NAME: serverless-udacity
     TODOS_TABLE: serverless-application-udacity-${self:provider.stage}
-    S3_BUCKET_NAME: serverless-application-udacity-${self:provider.stage}
+    S3_BUCKET_NAME: serverless-application-udacitya-${self:provider.stage}
 
 custom:
   documentation:

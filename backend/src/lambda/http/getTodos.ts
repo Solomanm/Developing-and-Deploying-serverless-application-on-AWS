@@ -1,5 +1,5 @@
 import 'source-map-support/register'
-import { cors } from 'middy/middlewares'
+//import { cors } from 'middy/middlewares'
 import {APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler} from 'aws-lambda';
 import {getAllToDoItems} from "../../businessLogic/ToDo";
 //import * as middy from 'middy'
@@ -24,9 +24,3 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         }),
     }
 }
-handler.arguments()
-    .use(
-    cors({
-      credentials: true
-    })
-  )

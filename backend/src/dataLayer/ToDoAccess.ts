@@ -1,11 +1,11 @@
 import * as AWS from "aws-sdk";
-import * as AWSXRay from 'aws-xray-sdk'
+//import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { TodoItem } from "../models/TodoItem";
 import { TodoUpdate } from "../models/TodoUpdate";
 import { Types } from 'aws-sdk/clients/s3';
 
-const XAWS = AWSXRay.captureAWS(AWS)
+//const XAWS = AWSXRay.captureAWS(AWS)
 
 export class ToDoAccess {
     constructor(
@@ -36,7 +36,6 @@ export class ToDoAccess {
     }
 
     async createToDo(todoItem: TodoItem): Promise<TodoItem> {
-        console.log("Creating new todo");
 
         const result = await this.docClient.put({
             TableName: this.todoTable,
@@ -50,7 +49,6 @@ export class ToDoAccess {
 
     async updateToDo(todoUpdate: TodoUpdate, todoId: string, userId: string): Promise<TodoUpdate> {
 
-        console.log('Upadte todo item ')
         await this.docClient.update({
         TableName: this.todoTable,
         Key: {
@@ -59,7 +57,7 @@ export class ToDoAccess {
         },
        
         UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
-        
+
         ExpressionAttributeValues: {
             ':name': todoUpdate.name,
             ':dueDate': todoUpdate.dueDate,
@@ -72,7 +70,6 @@ export class ToDoAccess {
     }
 
     async deleteToDo(todoId: string, userId: string): Promise<string> {
-        console.log("Deleting todo");
 
         const params = {
             TableName: this.todoTable,
@@ -89,10 +86,10 @@ export class ToDoAccess {
     }
 
     async generateUploadUrl(todoId: string): Promise<string> {
-        console.log("Generating URL");
+        console.log("Generating uploadURL");
 
         const url = this.s3Client.getSignedUrl('putObject', {
-            Bucket: this.s3BucketName,
+            BucketName: this.s3BucketName,
             Key: todoId,
             Expires: 1000,
         });

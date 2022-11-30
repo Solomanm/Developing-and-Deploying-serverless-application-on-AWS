@@ -1,8 +1,8 @@
 import {TodoItem} from "../models/TodoItem";
 import {parseUserId} from "../auth/utils";
-import * as uuid from 'uuid'
+//import * as uuid from 'uuid'
 import {CreateTodoRequest} from "../requests/CreateTodoRequest";
-import * as createError from 'http-errors'
+//import * as createError from 'http-errors'
 import {TodoUpdate} from "../models/TodoUpdate";
 import {ToDoAccess} from "../dataLayer/ToDoAccess";
 import {UpdateTodoRequest} from "../requests/UpdateTodoRequest";
@@ -30,17 +30,17 @@ export function createToDo(createTodoRequest: CreateTodoRequest, jwtToken: strin
         ...createTodoRequest,
     });
 }
-
+//update todo function
 export function updateToDo(updateTodoRequest: UpdateTodoRequest, todoId: string, jwtToken: string): Promise<TodoUpdate> {
     const userId = parseUserId(jwtToken);
     return toDoAccess.updateToDo(updateTodoRequest, todoId, userId);
 }
-
+// delete todo function
 export function deleteToDo(todoId: string, jwtToken: string): Promise<string> {
     const userId = parseUserId(jwtToken);
     return toDoAccess.deleteToDo(todoId, userId);
 }
-
+// generate url function
 export function generateUploadUrl(todoId: string): Promise<string> {
     return toDoAccess.generateUploadUrl(todoId);
 }

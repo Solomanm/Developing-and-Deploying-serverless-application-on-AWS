@@ -1,13 +1,13 @@
 import 'source-map-support/register'
 //import * as middy from 'middy'
-import { cors } from 'middy/middlewares'
+//import { cors } from 'middy/middlewares'
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
 import {CreateTodoRequest} from '../../requests/CreateTodoRequest';
 import {createToDo} from "../../businessLogic/ToDo";
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     // TODO: Implement creating a new TODO item
-    console.log("Processing create todo event ", event);
+    console.log(event);
     const authorization = event.headers.Authorization;
     const split = authorization.split(' ');
     const jwtToken = split[1];
@@ -25,9 +25,4 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         }),
     }
 }
-handler.arguments()
-    .use(
-    cors({
-      credentials: true
-    })
-  )
+
