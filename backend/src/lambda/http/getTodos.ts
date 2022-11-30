@@ -11,9 +11,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     const aut = event.headers.Authorization;
     const split = aut.split(' ');
     const token = split[1];
-
     const toDos = await getAllToDoItems(token);
-
     return {
         statusCode: 200,
         headers: {

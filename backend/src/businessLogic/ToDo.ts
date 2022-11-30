@@ -36,9 +36,9 @@ export function updateToDo(updateTodoRequest: UpdateTodoRequest, todoId: string,
     return toDoAccess.updateToDo(updateTodoRequest, todoId, userId);
 }
 // delete todo function
-export function deleteToDo(todoId: string, jwtToken: string): Promise<string> {
+export function deleteToDoItems(todoId: string, jwtToken: string): Promise<string> {
     const userId = parseUserId(jwtToken);
-    return toDoAccess.deleteToDo(todoId, userId);
+    return toDoAccess.deleteToDoItems(todoId, userId);
 }
 // generate url function
 export function generateUploadUrl(todoId: string): Promise<string> {

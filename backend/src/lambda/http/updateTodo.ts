@@ -13,9 +13,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     const token = split[1];
 
     const todoId = event.pathParameters.todoId;
-    const updatedTodo: UpdateTodoRequest = JSON.parse(event.body);
-
-    const toDoItem = await updateToDo(updatedTodo, todoId, token);
+    const updatedTodoItem: UpdateTodoRequest = JSON.parse(event.body);
+    const toDoItem = await updateToDo(updatedTodoItem, todoId, token);
 
     return {
         statusCode: 200,

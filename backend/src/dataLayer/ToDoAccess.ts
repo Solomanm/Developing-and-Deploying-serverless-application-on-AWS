@@ -16,7 +16,7 @@ export class ToDoAccess {
     }
 
     async getAllToDoItems(userId: string): Promise<TodoItem[]> {
-        console.log("Getting all todo");
+        console.log("Getting all todo Items");
         const params = {
             TableName: this.todoTable,
             KeyConditionExpression: "#userId = :userId",
@@ -29,7 +29,7 @@ export class ToDoAccess {
         };
 
         const result = await this.docClient.query(params).promise();
-        console.log(result);
+        console.log("results",result);
         const items = result.Items;
 
         return items as TodoItem[];
@@ -49,27 +49,35 @@ export class ToDoAccess {
 
     async updateToDo(todoUpdate: TodoUpdate, todoId: string, userId: string): Promise<TodoUpdate> {
 
-        await this.docClient.update({
-        TableName: this.todoTable,
-        Key: {
-            todoId,
-            userId
-        },
-       
-        UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
+        const params = {
+            TableName: this.todoTable,
+            Key: {
+                "userId": userId,
+                "todoId": todoId
+            },
+            UpdateExpression: "set #name = :a, #dueDate = :b, #done = :c",
+            ExpressionAttributeNames: {
+                "#a": "name",
+                "#b": "dueDate",
+                "#c": "done"
+            },
+            ExpressionAttributeValues: {
+                ":a": todoUpdate['name'],
+                ":b": todoUpdate['dueDate'],
+                ":c": todoUpdate['done']
+            },
+            ReturnValues: "ALL_NEW"
+        };
 
-        ExpressionAttributeValues: {
-            ':name': todoUpdate.name,
-            ':dueDate': todoUpdate.dueDate,
-            ':done': todoUpdate.done
-        },
-    })
-    .promise()
-    return todoUpdate
+        const result = await this.docClient.update(params).promise();
+        console.log(result);
+        const attributes = result.Attributes;
+
+        return attributes as TodoUpdate;
 
     }
 
-    async deleteToDo(todoId: string, userId: string): Promise<string> {
+    async deleteToDoItems(todoId: string, userId: string): Promise<string> {
 
         const params = {
             TableName: this.todoTable,
@@ -86,8 +94,6 @@ export class ToDoAccess {
     }
 
     async generateUploadUrl(todoId: string): Promise<string> {
-        console.log("Generating uploadURL");
-
         const url = this.s3Client.getSignedUrl('putObject', {
             BucketName: this.s3BucketName,
             Key: todoId,

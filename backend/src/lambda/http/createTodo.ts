@@ -11,7 +11,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     const authorization = event.headers.Authorization;
     const split = authorization.split(' ');
     const jwtToken = split[1];
-
     const newTodo: CreateTodoRequest = JSON.parse(event.body);
     const toDoItem = await createToDo(newTodo, jwtToken);
 
